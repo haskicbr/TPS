@@ -50,7 +50,6 @@ void ATriggeredLight::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AAc
 void ATriggeredLight::BeginPlay()
 {
   Super::BeginPlay();
-  this->Deactivate();
 }
 
 void ATriggeredLight::Activate()
