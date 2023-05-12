@@ -11,4 +11,14 @@ UCLASS()
 class TPS_API ACharacterPlayer : public ACharacterBase
 {
   GENERATED_BODY()
+public:
+  ACharacterPlayer();
+  void MoveForward(float ForwardAxis) override;
+  void MoveRight(float RightAxis);
+  void Turn(float RightAxis);
+  void LookUp(float RightAxis);
+
+protected:
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Components)
+  class UCameraComponent* CameraComponent;
 };

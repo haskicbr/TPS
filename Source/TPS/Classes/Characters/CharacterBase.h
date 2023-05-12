@@ -20,9 +20,6 @@ protected:
 public:
   virtual void Tick(float DeltaTime) override;
 
-  virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-private:
-  void MoveForward(float ForwardAxis);
-  void MoveRight(float RightAxis);
+  virtual void MoveForward(float ForwardAxis);
+  virtual void MoveRight(float RightAxis);
 };

@@ -1,15 +1,17 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "TPSGameMode.h"
-#include "TPSCharacter.h"
+#include "Characters/CharacterPlayer.h"
+#include "Controllers/TPSController.h"
 #include "UObject/ConstructorHelpers.h"
 
 ATPSGameMode::ATPSGameMode()
 {
-	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
+	static ConstructorHelpers::FClassFinder<ACharacterBase> PlayerPawnBPClass(TEXT("/Game/Main/Blueprints/Characters/BP_CharacterPlayer"));
+
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+  //DefaultPawnClass = ACharacterPlayer::StaticClass();
+  PlayerControllerClass = ATPSController::StaticClass();
 }
