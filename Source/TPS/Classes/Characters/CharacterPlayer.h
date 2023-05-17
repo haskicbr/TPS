@@ -1,24 +1,36 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Characters/CharacterBase.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "CharacterPlayer.generated.h"
-
 
 UCLASS()
 class TPS_API ACharacterPlayer : public ACharacterBase
 {
   GENERATED_BODY()
+
 public:
   ACharacterPlayer();
-  void MoveForward(float ForwardAxis) override;
-  void MoveRight(float RightAxis);
+  virtual void MoveForward(float ForwardAxis) override;
+  virtual void MoveRight(float RightAxis) override;
   void Turn(float RightAxis);
   void LookUp(float RightAxis);
 
-protected:
-  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Components)
+  UPROPERTY(
+    VisibleAnywhere,
+    BlueprintReadWrite,
+    Category=Components
+  )
   class UCameraComponent* CameraComponent;
+
+
+  UPROPERTY(
+    VisibleAnywhere,
+    BlueprintReadWrite,
+    Category=Components
+  )
+  class USpringArmComponent* SpringArmComponent;
+
+
 };

@@ -1,11 +1,18 @@
 #include "Characters/CharacterPlayer.h"
 #include "Camera/CameraComponent.h"
 
+
 ACharacterPlayer::ACharacterPlayer()
 {
   PrimaryActorTick.bCanEverTick = true;
   CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-  CameraComponent->SetupAttachment(GetRootComponent());
+
+  SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+  SpringArmComponent->SetupAttachment(GetRootComponent());
+  SpringArmComponent->TargetArmLength = 600.f;
+  SpringArmComponent->bUsePawnControlRotation = false;
+
+  CameraComponent->SetupAttachment(SpringArmComponent);
 }
 
 
