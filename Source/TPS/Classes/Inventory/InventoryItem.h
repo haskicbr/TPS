@@ -1,46 +1,62 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "InventoryItemType.h"
 #include "InventoryItem.generated.h"
 
-
-UCLASS()
-class TPS_API UInventoryItem : public UObject
+UCLASS(
+  Blueprintable,
+  BlueprintType,
+  EditInlineNew
+)
+class TPS_API UInventoryItem  : public UObject
 {
   GENERATED_BODY()
 
 public:
+  UInventoryItem();
+
+  UPROPERTY(EditAnywhere)
+  TEnumAsByte<EInventoryItemType> InventoryType = EInventoryItemType::Consumable;
+
   UPROPERTY(
-    VisibleAnywhere
+    EditAnywhere,
+    BlueprintReadWrite
   )
   int32 Count = 1;
 
   UPROPERTY(
-    VisibleAnywhere
+    EditAnywhere,
+    BlueprintReadOnly
   )
   int32 CountMax = 1;
 
   UPROPERTY(
-    VisibleAnywhere
+    EditAnywhere,
+    BlueprintReadOnly
   )
   bool IsUsable = false;
   UPROPERTY(
-    VisibleAnywhere
+    EditAnywhere
   )
   bool IsCountable = false;
+
   UPROPERTY(
-    VisibleAnywhere
-  )
-  FString Uid = FGuid::NewGuid().ToString();
-  UPROPERTY(
-    VisibleAnywhere
+    EditAnywhere
   )
   FString TimeSpan = "";
+
   UPROPERTY(
-    VisibleAnywhere
+    EditAnywhere,
+    BlueprintReadOnly
   )
-  AActor* ObjectInWorld = nullptr;
+
+  UStaticMesh * StaticMesh;
+
+  UPROPERTY(
+    EditAnywhere,
+    BlueprintReadOnly
+  )
+  TSubclassOf<class AActor> ActorInWorld;
 };

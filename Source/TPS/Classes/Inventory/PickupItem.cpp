@@ -1,5 +1,4 @@
 #include "PickupItem.h"
-
 #include "InventoryComponent.h"
 #include "Characters/CharacterBase.h"
 
@@ -13,6 +12,7 @@ APickupItem::APickupItem()
       "DefaultRoot"
     )
   );
+
   StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(
     TEXT(
       "StaticMeshComponent"
@@ -73,6 +73,17 @@ void APickupItem::OnOverlapBegin(
 
   if (CharacterBase)
   {
+
+    if(InventoryItem->InventoryType == EInventoryItemType::WeaponRange)
+    {
+      CharacterBase->GetMesh()->GetSocketByName(CharacterBase->WeaponMainSocketName);
+
+      AActor * InventoryActor = GetWorld()->SpawnActor(InventoryItem->ActorInWorld);
+
+      const FAttachmentTransformRules AttachRules = FAttachmentTransformRules( EAttachmentRule::KeepRelative, false );
+      InventoryActor->AttachToComponent(CharacterBase->GetMesh(), AttachRules, CharacterBase->WeaponMainSocketName);
+    }
+
     CharacterBase->InventoryComponent->AddItem(
       InventoryItem
     );

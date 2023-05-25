@@ -5,27 +5,31 @@
 #include "GameFramework/Actor.h"
 #include "PickupItem.generated.h"
 
-UCLASS()
+UCLASS(
+  Blueprintable
+)
 class TPS_API APickupItem : public AActor
 {
   GENERATED_BODY()
 
 public:
   APickupItem();
-
   UPROPERTY(
-    EditAnywhere
+    VisibleAnywhere
   )
   USceneComponent* DefaultRoot;
 
   UPROPERTY(
-    EditAnywhere
+    Instanced,
+    EditAnywhere,
+    BlueprintReadOnly,
+    Category = Inventory
   )
   UInventoryItem* InventoryItem;
 
-
   UPROPERTY(
-    EditAnywhere
+    EditAnywhere,
+    BlueprintReadWrite
   )
   UStaticMeshComponent* StaticMesh;
 

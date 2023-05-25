@@ -5,33 +5,6 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.generated.h"
 
-UENUM()
-enum EInventoryItemType
-{
-  WeaponMelee UMETA(
-    DisplayName = "WeaponMelee"
-  ),
-  WeaponRange UMETA(
-    DisplayName = "WeaponRange"
-  ),
-  WeaponRangeAmmo UMETA(
-    DisplayName = "Weapon"
-  ),
-  Consumable UMETA(
-    DisplayName = "Consumable"
-  ),
-};
-
-USTRUCT()
-struct FInventoryItemParams
-{
-  GENERATED_BODY()
-  EInventoryItemType Type = EInventoryItemType::Consumable;
-  int32 Count = 0;
-  int32 CountMax = 0;
-};
-
-
 UCLASS(
   ClassGroup=(Custom),
   meta=(BlueprintSpawnableComponent)
