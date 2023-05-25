@@ -10,14 +10,16 @@ UCLASS(
   BlueprintType,
   EditInlineNew
 )
-class TPS_API UInventoryItem  : public UObject
+class TPS_API UInventoryItem : public UObject
 {
   GENERATED_BODY()
 
 public:
   UInventoryItem();
 
-  UPROPERTY(EditAnywhere)
+  UPROPERTY(
+    EditAnywhere
+  )
   TEnumAsByte<EInventoryItemType> InventoryType = EInventoryItemType::Consumable;
 
   UPROPERTY(
@@ -52,11 +54,19 @@ public:
     BlueprintReadOnly
   )
 
-  UStaticMesh * StaticMesh;
+  UStaticMesh* StaticMesh;
 
   UPROPERTY(
     EditAnywhere,
     BlueprintReadOnly
   )
   TSubclassOf<class AActor> ActorInWorld;
+
+
+  UPROPERTY(
+    EditAnywhere,
+    BlueprintReadOnly
+  )
+
+  UTexture2D* Icon;
 };

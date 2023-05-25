@@ -1,7 +1,7 @@
 #include "PickupItem.h"
 #include "InventoryComponent.h"
 #include "Characters/CharacterBase.h"
-
+#include "Weapon/WeaponBase.h"
 
 APickupItem::APickupItem()
 {
@@ -66,33 +66,46 @@ void APickupItem::OnOverlapBegin(
   const FHitResult& Hit
 )
 {
-
   ACharacterBase* CharacterBase = Cast<ACharacterBase>(
     OtherActor
   );
 
-  if (CharacterBase)
+  if (CharacterBase && InventoryItem)
   {
-
-    if(InventoryItem->InventoryType == EInventoryItemType::WeaponRange)
+    if (InventoryItem->InventoryType == EInventoryItemType::WeaponRange)
     {
-      CharacterBase->GetMesh()->GetSocketByName(CharacterBase->WeaponMainSocketName);
+      this->InventoryItem = InventoryItem;
 
-      AActor * InventoryActor = GetWorld()->SpawnActor(InventoryItem->ActorInWorld);
+      CharacterBase->GetMesh()->GetSocketByName(
+        CharacterBase->WeaponMainSocketName
+      );
 
-      const FAttachmentTransformRules AttachRules = FAttachmentTransformRules( EAttachmentRule::KeepRelative, false );
-      InventoryActor->AttachToComponent(CharacterBase->GetMesh(), AttachRules, CharacterBase->WeaponMainSocketName);
+      AActor* InventoryActor = GetWorld()->SpawnActor(
+        InventoryItem->ActorInWorld
+      );
+
+      AWeaponBase* Weapon = Cast<AWeaponBase>(
+        InventoryActor
+      );
+
+      const FAttachmentTransformRules AttachRules = FAttachmentTransformRules(
+        EAttachmentRule::KeepRelative,
+        false
+      );
+      InventoryActor->AttachToComponent(
+        CharacterBase->GetMesh(),
+        AttachRules,
+        CharacterBase->WeaponMainSocketName
+      );
+
+      if (Weapon)
+      {
+        CharacterBase->Weapon = Weapon;
+      }
     }
 
     CharacterBase->InventoryComponent->AddItem(
       InventoryItem
-    );
-
-    GEngine->AddOnScreenDebugMessage(
-      -1,
-      4.5f,
-      FColor::Purple,
-      "Item added"
     );
 
     Destroy();
