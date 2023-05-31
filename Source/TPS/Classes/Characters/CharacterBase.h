@@ -14,6 +14,18 @@ class TPS_API ACharacterBase : public ACharacter
 public:
   ACharacterBase();
 
+  UPROPERTY(EditAnywhere)
+  class UInventoryComponent* InventoryComponent;
+
+  UPROPERTY(VisibleAnywhere)
+  FName WeaponMainSocketName = FName("WeaponMainSocket");
+
+  UPROPERTY(VisibleAnywhere)
+  FName WeaponSecondarySocketName = FName("WeaponSecondarySocket");
+
+  UPROPERTY(VisibleAnywhere)
+  class AWeaponBase * Weapon;
+
 protected:
   virtual void BeginPlay() override;
 
