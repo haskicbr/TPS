@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "InventoryItemType.generated.h"
 
-UENUM()
+UENUM(BlueprintType)
 enum EInventoryItemType
 {
   WeaponMelee UMETA(

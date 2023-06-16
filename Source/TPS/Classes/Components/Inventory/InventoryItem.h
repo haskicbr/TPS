@@ -57,7 +57,7 @@ public:
   UStaticMesh* StaticMesh;
 
   UPROPERTY(
-    EditAnywhere,
+    EditDefaultsOnly,
     BlueprintReadOnly
   )
   TSubclassOf<class AActor> ActorInWorld;

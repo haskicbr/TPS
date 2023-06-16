@@ -21,7 +21,7 @@ public:
 
   UPROPERTY(
     Instanced,
-    EditAnywhere,
+    EditDefaultsOnly,
     BlueprintReadOnly,
     Category = Inventory
   )

@@ -92,6 +92,7 @@ void APickupItem::OnOverlapBegin(
         EAttachmentRule::KeepRelative,
         false
       );
+
       InventoryActor->AttachToComponent(
         CharacterBase->GetMesh(),
         AttachRules,
@@ -101,6 +102,7 @@ void APickupItem::OnOverlapBegin(
       if (Weapon)
       {
         CharacterBase->Weapon = Weapon;
+        Weapon->Owner = CharacterBase;
       }
     }
 

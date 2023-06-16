@@ -1,19 +1,19 @@
 #include "InventoryComponent.h"
 
-
-
 UInventoryComponent::UInventoryComponent()
 {
-  PrimaryComponentTick.bCanEverTick = true;
+  PrimaryComponentTick.bCanEverTick = false;
 }
 
 void UInventoryComponent::BeginPlay()
 {
+  Super::BeginPlay();
+
   UInventoryItem* InventoryItem = NewObject<UInventoryItem>();
+
   InventoryItem->CountMax = 10;
   InventoryItem->Count = 5;
 
-  Super::BeginPlay();
   Inventory.Add(
     FString(
       "test"
@@ -30,17 +30,4 @@ void UInventoryComponent::BeginPlay()
       InventoryItem->GetName()
     );
   }
-}
-
-void UInventoryComponent::TickComponent(
-  float DeltaTime,
-  ELevelTick TickType,
-  FActorComponentTickFunction* ThisTickFunction
-)
-{
-  Super::TickComponent(
-    DeltaTime,
-    TickType,
-    ThisTickFunction
-  );
 }
