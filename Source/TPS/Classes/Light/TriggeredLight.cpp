@@ -5,26 +5,75 @@ ATriggeredLight::ATriggeredLight()
 {
   PrimaryActorTick.bCanEverTick = false;
 
-  DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultRoot"));
-  StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+  DefaultRoot = CreateDefaultSubobject<USceneComponent>(
+    TEXT(
+      "DefaultRoot"
+    )
+  );
 
-  PointLight = CreateDefaultSubobject<UPointLightComponent>(TEXT("Light"));
+  SetRootComponent(
+    DefaultRoot
+  );
 
-  StaticMesh->SetupAttachment(DefaultRoot);
-  PointLight->SetupAttachment(StaticMesh);
+  StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(
+    TEXT(
+      "StaticMeshComponent"
+    )
+  );
 
-  StaticMesh->OnComponentBeginOverlap.AddDynamic(this, &ATriggeredLight::OnOverlapBegin);
-  StaticMesh->OnComponentEndOverlap.AddDynamic(this, &ATriggeredLight::OnOverlapEnd);
+  static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(
+    TEXT(
+      "StaticMesh'/Game/Main/Meshes/Cone'"
+    )
+  );
+  UStaticMesh* Asset = MeshAsset.Object;
 
-  StaticMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-  PointLight->SetVisibility(false);
+  StaticMesh->SetStaticMesh(
+    Asset
+  );
+
+  PointLight = CreateDefaultSubobject<UPointLightComponent>(
+    TEXT(
+      "Light"
+    )
+  );
+
+  PointLight->SetupAttachment(
+    StaticMesh
+  );
+  StaticMesh->SetupAttachment(
+    DefaultRoot
+  );
+
+  StaticMesh->OnComponentBeginOverlap.AddDynamic(
+    this,
+    &ATriggeredLight::OnOverlapBegin
+  );
+  StaticMesh->OnComponentEndOverlap.AddDynamic(
+    this,
+    &ATriggeredLight::OnOverlapEnd
+  );
+
+  StaticMesh->SetCollisionResponseToAllChannels(
+    ECollisionResponse::ECR_Overlap
+  );
+  PointLight->SetVisibility(
+    false
+  );
 }
 
-void ATriggeredLight::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                     UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
-                                     const FHitResult& Hit)
+void ATriggeredLight::OnOverlapBegin(
+  UPrimitiveComponent* OverlappedComponent,
+  AActor* OtherActor,
+  UPrimitiveComponent* OtherComponent,
+  int32 OtherBodyIndex,
+  bool bFromSweep,
+  const FHitResult& Hit
+)
 {
-  const auto PlayerCharacter = Cast<ACharacter>(OtherActor);
+  const auto PlayerCharacter = Cast<ACharacter>(
+    OtherActor
+  );
 
   if (!PlayerCharacter)
   {
@@ -34,10 +83,16 @@ void ATriggeredLight::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, A
   this->Activate();
 }
 
-void ATriggeredLight::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ATriggeredLight::OnOverlapEnd(
+  UPrimitiveComponent* OverlappedComponent,
+  AActor* OtherActor,
+  UPrimitiveComponent* OtherComp,
+  int32 OtherBodyIndex
+)
 {
-  const auto PlayerCharacter = Cast<ACharacter>(OtherActor);
+  const auto PlayerCharacter = Cast<ACharacter>(
+    OtherActor
+  );
 
   if (!PlayerCharacter)
   {
@@ -54,10 +109,14 @@ void ATriggeredLight::BeginPlay()
 
 void ATriggeredLight::Activate()
 {
-  PointLight->SetVisibility(true);
+  PointLight->SetVisibility(
+    true
+  );
 }
 
 void ATriggeredLight::Deactivate()
 {
-  PointLight->SetVisibility(false);
+  PointLight->SetVisibility(
+    false
+  );
 }

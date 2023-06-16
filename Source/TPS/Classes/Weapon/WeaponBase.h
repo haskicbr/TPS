@@ -13,6 +13,7 @@ class TPS_API AWeaponBase : public AActor
   GENERATED_BODY()
 
 public:
+  UPROPERTY(VisibleAnywhere)
   bool IsEquipped;
 
   UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -32,5 +33,5 @@ public:
   FName ProjectileSocketName = FName("ProjectileSocket");
 
   UFUNCTION(BlueprintCallable, Category=Weapon)
-  void Shoot();
+  void Fire(const FVector To);
 };

@@ -4,34 +4,67 @@
 
 ACharacterPlayer::ACharacterPlayer()
 {
+
   PrimaryActorTick.bCanEverTick = true;
-  CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+  CameraComponent = CreateDefaultSubobject<UCameraComponent>(
+    TEXT(
+      "CameraComponent"
+    )
+  );
 
-  SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
-  SpringArmComponent->SetupAttachment(GetRootComponent());
+  SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(
+    "SpringArmComponent"
+  );
+
+  SpringArmComponent->SetupAttachment(
+    GetRootComponent()
+  );
   SpringArmComponent->TargetArmLength = 600.f;
-  SpringArmComponent->bUsePawnControlRotation = false;
 
-  CameraComponent->SetupAttachment(SpringArmComponent);
+
+  CameraComponent->SetupAttachment(
+    SpringArmComponent
+  );
+
+  SpringArmComponent->bUsePawnControlRotation = true;
+
+
+  static ConstructorHelpers::FObjectFinder<UAnimMontage> MontageAsset(
+    TEXT(
+      "Montage'/Game/Main/Blueprints/AM_Test'"
+    )
+  );
+
+  Montage = MontageAsset.Object;
 }
 
 
 void ACharacterPlayer::MoveForward(float ForwardAxis)
 {
-  AddMovementInput(GetActorForwardVector(), ForwardAxis);
+  AddMovementInput(
+    GetActorForwardVector(),
+    ForwardAxis
+  );
 }
 
 void ACharacterPlayer::MoveRight(float RightAxis)
 {
-  AddMovementInput(GetActorRightVector(), RightAxis);
+  AddMovementInput(
+    GetActorRightVector(),
+    RightAxis
+  );
 }
 
 void ACharacterPlayer::Turn(float Axis)
 {
-  AddControllerYawInput(Axis);
+  AddControllerYawInput(
+    Axis
+  );
 }
 
 void ACharacterPlayer::LookUp(float Axis)
 {
-  AddControllerPitchInput(Axis);
+  AddControllerPitchInput(
+    Axis
+  );
 }

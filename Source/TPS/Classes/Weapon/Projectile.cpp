@@ -19,7 +19,7 @@ AProjectile::AProjectile()
   );
 
   CollisionBox->SetCollisionObjectType(
-    ECC_WorldDynamic
+    ECC_Visibility
   );
   CollisionBox->SetCollisionEnabled(
     ECollisionEnabled::QueryAndPhysics
@@ -78,11 +78,27 @@ void AProjectile::OnHit(
   const FHitResult& Hit
 )
 {
-  Destroyed();
+
+
+
+  if (OtherActor)
+  {
+    UGameplayStatics::ApplyDamage(
+      OtherActor,
+      DamageValue,
+      nullptr,
+      OtherActor,
+      nullptr
+    );
+  }
+
+  Destroy();
 }
 
 void AProjectile::Destroyed()
 {
+  Super::Destroyed();
+
   UGameplayStatics::SpawnEmitterAtLocation(
     GetWorld(),
     ImpactParticle,
@@ -95,5 +111,5 @@ void AProjectile::Destroyed()
     GetActorLocation()
   );
 
-  Super::Destroyed();
+
 }

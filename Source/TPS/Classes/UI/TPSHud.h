@@ -44,4 +44,8 @@ public:
   UFUNCTION(BlueprintCallable, Category="Widgets")
   void InitialWidgets();
 
+  UFUNCTION()
+  void UpdateHealth(float Health, float MaxHealth) ;
+
+
 };

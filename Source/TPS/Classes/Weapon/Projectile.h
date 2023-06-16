@@ -30,6 +30,10 @@ protected:
   virtual void Destroyed() override;
 
 private:
+
+  UPROPERTY(EditAnywhere)
+  float DamageValue = 5.0;
+
   UPROPERTY(
     EditAnywhere
   )

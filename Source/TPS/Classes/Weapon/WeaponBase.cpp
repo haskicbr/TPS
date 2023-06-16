@@ -2,7 +2,7 @@
 
 #include "Projectile.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
+#include "Components/SkeletalMeshComponent.h"
 
 AWeaponBase::AWeaponBase()
 {
@@ -29,8 +29,12 @@ void AWeaponBase::Tick(float DeltaSeconds)
   );
 }
 
-void AWeaponBase::Shoot()
+void AWeaponBase::Fire(const FVector To)
 {
+  const FVector From = SkeletalMeshComponent->GetSocketLocation(ProjectileSocketName);
+
+  const FVector Direction = To - From;
+  const FRotator Rotation = Direction.Rotation();
 
   GEngine->AddOnScreenDebugMessage(
     -1,
@@ -39,29 +43,26 @@ void AWeaponBase::Shoot()
     __FUNCTION__
   );
 
-
-  APawn* InstigatorPawn = Cast<APawn>(
-    GetOwner()
-  );
-
   FActorSpawnParameters SpawnParameters;
 
-  SpawnParameters.Owner = GetOwner();
-  SpawnParameters.Instigator = InstigatorPawn;
+
+  APawn* PawnOwner = Cast<APawn>(
+  GetOwner()
+  );
+
+  if (PawnOwner)
+  {
+    SpawnParameters.Instigator = PawnOwner;
+  }
 
 
-  /*
-  SkeletalMeshComponent->GetSocketLocation()
-  */
+  //SpawnParameters.Owner = InstigatorPawn;
+  //SpawnParameters.Instigator = InstigatorPawn;
 
   GetWorld()->SpawnActor<AProjectile>(
     Projectile,
-    GetActorLocation() + GetActorForwardVector() * 4 + GetActorUpVector() * 2,
-    FRotator(
-      0,
-      0,
-      0
-    ),
+    From,
+    Rotation,
     SpawnParameters
   );
 }

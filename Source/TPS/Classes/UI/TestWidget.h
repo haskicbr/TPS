@@ -16,4 +16,7 @@ class TPS_API UTestWidget : public UUserWidget
 public:
   UPROPERTY(EditAnywhere, meta = (BindWidget))
   UTextBlock* TestTextField;
+
+
+  virtual void NativeConstruct() override;
 };

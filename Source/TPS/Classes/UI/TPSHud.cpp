@@ -3,6 +3,8 @@
 
 #include "TPSHud.h"
 
+#include <string>
+
 #include "TestWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -36,7 +38,7 @@ void ATPSHud::Tick(float DeltaSeconds)
       Text
     );
 
-    MainHudWidget->HealthBar->SetPercent(1.0);
+
   }
 }
 
@@ -59,4 +61,26 @@ void ATPSHud::InitialWidgets()
     CharacterOverlay->AddToViewport();
     MainHudWidget->AddToViewport();
   }
+}
+
+void ATPSHud::UpdateHealth(const float Health, const float MaxHealth)
+{
+  GEngine->AddOnScreenDebugMessage(
+    -1,
+    4.5f,
+    FColor::Green,
+    "ATPSHud::UpdateHealth"
+  );
+
+
+  MainHudWidget->HealthBar->SetPercent(
+    Health / MaxHealth
+  );
+  MainHudWidget->HealthValue->SetText(
+    FText::FromString(
+      FString::SanitizeFloat(
+        Health
+      )
+    )
+  );
 }
