@@ -8,6 +8,11 @@ UAttributesComponent::UAttributesComponent()
 void UAttributesComponent::BeginPlay()
 {
   Super::BeginPlay();
+
+
+  ChangeHealth(
+    0
+  );
 }
 
 void UAttributesComponent::ChangeHealth(float HealthParam)
@@ -17,5 +22,13 @@ void UAttributesComponent::ChangeHealth(float HealthParam)
     Health += HealthParam;
   }
 
-  OnChangeHealth.Broadcast(Health, HealthMax);
+  if (Health <= 0)
+  {
+    OnDeath.Broadcast();
+  }
+
+  OnChangeHealth.Broadcast(
+    Health,
+    HealthMax
+  );
 }

@@ -14,6 +14,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(
   MaxHealth
 );
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(
+  FDeathDelegate
+);
+
 UCLASS(
   ClassGroup=(Custom),
   meta=(BlueprintSpawnableComponent)
@@ -30,9 +34,17 @@ protected:
   virtual void BeginPlay() override;
 
 public:
-  UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Attributes")
+  UPROPERTY(
+    EditInstanceOnly,
+    BlueprintReadOnly,
+    Category="Attributes"
+  )
   float Health = 100.0;
-  UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category="Attributes")
+  UPROPERTY(
+    EditInstanceOnly,
+    BlueprintReadOnly,
+    Category="Attributes"
+  )
   float HealthMax = 100.0;
 
   UPROPERTY(
@@ -40,7 +52,14 @@ public:
   )
   FChangeHealthDelegate OnChangeHealth;
 
+  UPROPERTY(
+    BlueprintAssignable
+  )
+  FDeathDelegate OnDeath;
 
-  UFUNCTION(BlueprintCallable)
+
+  UFUNCTION(
+    BlueprintCallable
+  )
   void ChangeHealth(float NewHealth);
 };
