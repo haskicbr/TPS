@@ -85,7 +85,7 @@ void AProjectile::OnHit(
   {
     UGameplayStatics::ApplyDamage(
       OtherActor,
-      DamageValue,
+      Params.Damage,
       nullptr,
       OtherActor,
       nullptr

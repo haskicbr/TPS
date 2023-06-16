@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Sound/SoundCue.h"
+#include "TPS/Structures/ProjectileParams.h"
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -32,7 +33,8 @@ protected:
 private:
 
   UPROPERTY(EditAnywhere)
-  float DamageValue = 5.0;
+  FProjectileParams Params;
+
 
   UPROPERTY(
     EditAnywhere

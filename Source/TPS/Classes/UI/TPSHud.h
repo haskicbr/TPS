@@ -6,6 +6,7 @@
 #include "MainHudWidget.h"
 #include "TestWidget.h"
 #include "GameFramework/HUD.h"
+#include "Inventory/InventoryWidget.h"
 #include "TPSHud.generated.h"
 
 
@@ -24,8 +25,13 @@ public:
   class UMainHudWidget* MainHudWidget;
 
   UPROPERTY()
+  class UInventoryWidget* InventoryWidget;
+
+  UPROPERTY()
   float CurrentTime = 0.0;
 
+  UPROPERTY()
+  bool IsInventoryOpen = false;
 
   UPROPERTY(
     EditAnywhere,
@@ -41,11 +47,22 @@ public:
   )
   TSubclassOf<UMainHudWidget> MainHudWidgetClass;
 
+
+  UPROPERTY(
+    EditAnywhere,
+    BlueprintReadWrite,
+    Category= "Inventory Widget"
+  )
+  TSubclassOf<UInventoryWidget> InventoryWidgetClass;
+
   UFUNCTION(BlueprintCallable, Category="Widgets")
   void InitialWidgets();
 
   UFUNCTION()
   void UpdateHealth(float Health, float MaxHealth) ;
+
+  UFUNCTION()
+  void ShowInventory();
 
 
 };

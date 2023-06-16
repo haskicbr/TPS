@@ -34,4 +34,9 @@ public:
     );
   }
 
+  /**
+   * Initial inventory from save object
+   */
+  UFUNCTION()
+  virtual void InitializeInventory();
 };

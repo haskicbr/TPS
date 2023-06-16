@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "UI/TPSHud.h"
 #include "TPSController.generated.h"
 
 UCLASS()
@@ -17,6 +18,10 @@ public:
 
   UPROPERTY()
   FVector TargetPointFromCenterScreen = FVector();
+
+  UPROPERTY()
+  ATPSHud * HUD;
+
 
   virtual void SetupInputComponent() override;
   virtual void MoveForward(float Value);

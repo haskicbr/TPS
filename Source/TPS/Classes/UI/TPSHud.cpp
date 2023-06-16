@@ -1,10 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "TPSHud.h"
-
-#include <string>
-
 #include "TestWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,10 +6,6 @@
 void ATPSHud::BeginPlay()
 {
   Super::BeginPlay();
-
-  if (CharacterOverlay)
-  {
-  }
 }
 
 void ATPSHud::Tick(float DeltaSeconds)
@@ -37,8 +27,6 @@ void ATPSHud::Tick(float DeltaSeconds)
     CharacterOverlay->TestTextField->SetText(
       Text
     );
-
-
   }
 }
 
@@ -50,29 +38,26 @@ void ATPSHud::InitialWidgets()
     CharacterOverlayClass
   );
 
-
   MainHudWidget = CreateWidget<UMainHudWidget>(
     GetOwningPlayerController(),
     MainHudWidgetClass
+  );
+
+  InventoryWidget = CreateWidget<UInventoryWidget>(
+    GetOwningPlayerController(),
+    InventoryWidgetClass
   );
 
   if (CharacterOverlay)
   {
     CharacterOverlay->AddToViewport();
     MainHudWidget->AddToViewport();
+    InventoryWidget->AddToViewport();
   }
 }
 
 void ATPSHud::UpdateHealth(const float Health, const float MaxHealth)
 {
-  GEngine->AddOnScreenDebugMessage(
-    -1,
-    4.5f,
-    FColor::Green,
-    "ATPSHud::UpdateHealth"
-  );
-
-
   MainHudWidget->HealthBar->SetPercent(
     Health / MaxHealth
   );
@@ -83,4 +68,23 @@ void ATPSHud::UpdateHealth(const float Health, const float MaxHealth)
       )
     )
   );
+}
+
+void ATPSHud::ShowInventory()
+{
+  IsInventoryOpen = !IsInventoryOpen;
+
+  if (!InventoryWidget)
+  {
+    return;
+  }
+
+  if (IsInventoryOpen)
+  {
+    InventoryWidget->RemoveFromParent();
+  }
+  else
+  {
+    InventoryWidget->AddToViewport();
+  }
 }

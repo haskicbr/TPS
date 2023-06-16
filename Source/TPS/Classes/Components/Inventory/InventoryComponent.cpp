@@ -31,3 +31,8 @@ void UInventoryComponent::BeginPlay()
     );
   }
 }
+
+void UInventoryComponent::InitializeInventory()
+{
+
+}

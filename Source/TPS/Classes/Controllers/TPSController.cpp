@@ -17,10 +17,6 @@ ATPSController::ATPSController()
 {
   PrimaryActorTick.bCanEverTick = true;
   PrimaryActorTick.bStartWithTickEnabled = true;
-
-
-
-
 }
 
 void ATPSController::SetupInputComponent()
@@ -30,6 +26,8 @@ void ATPSController::SetupInputComponent()
   check(
     InputComponent
   );
+
+
 
   InputComponent->BindAction(
     "Fire",
@@ -101,11 +99,19 @@ void ATPSController::BeginPlay()
   );
   ControlledCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 
+  HUD = Cast<ATPSHud>(GetHUD());
+
+  InputComponent->BindAction(
+    "Inventory",
+    IE_Pressed,
+    HUD,
+    &ATPSHud::ShowInventory
+  );
 
 
-  ATPSHud * Hud = Cast<ATPSHud>(GetHUD());
 
-  ControlledCharacter->AttributesComponent->OnChangeHealth.AddDynamic(Hud, &ATPSHud::UpdateHealth);
+
+  ControlledCharacter->AttributesComponent->OnChangeHealth.AddDynamic(HUD, &ATPSHud::UpdateHealth);
 }
 
 

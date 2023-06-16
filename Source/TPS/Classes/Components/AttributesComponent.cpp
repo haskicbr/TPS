@@ -22,6 +22,11 @@ void UAttributesComponent::ChangeHealth(float HealthParam)
     Health += HealthParam;
   }
 
+  if (Health < 0)
+  {
+    Health = 0;
+  }
+
   if (Health <= 0)
   {
     OnDeath.Broadcast();

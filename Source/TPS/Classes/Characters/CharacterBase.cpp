@@ -1,6 +1,7 @@
 #include "CharacterBase.h"
 
 #include "Components/AttributesComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/Inventory/InventoryComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -79,4 +80,9 @@ void ACharacterBase::Death()
   {
     CharacterController->UnPossess();
   }
+
+
+  GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+
 }
