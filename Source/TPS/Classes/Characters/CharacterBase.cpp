@@ -20,18 +20,19 @@ ACharacterBase::ACharacterBase()
     )
   );
 
-
+  AttributesComponent->OnDeath.AddDynamic(
+    this,
+    &ACharacterBase::Death
+  );
 }
 
 void ACharacterBase::BeginPlay()
 {
-
   Super::BeginPlay();
 }
 
 void ACharacterBase::Tick(const float DeltaTime)
 {
-
   Super::Tick(
     DeltaTime
   );
@@ -53,7 +54,9 @@ float ACharacterBase::TakeDamage(
   AActor* DamageCauser
 )
 {
-  AttributesComponent->ChangeHealth(-DamageAmount);
+  AttributesComponent->ChangeHealth(
+    -DamageAmount
+  );
 
   return Super::TakeDamage(
     DamageAmount,
@@ -61,4 +64,19 @@ float ACharacterBase::TakeDamage(
     EventInstigator,
     DamageCauser
   );
+}
+
+void ACharacterBase::Death()
+{
+  this->GetMovementComponent()->Deactivate();
+  IsDeath = true;
+
+  AController* CharacterController = Cast<AController>(
+    GetController()
+  );
+
+  if (CharacterController)
+  {
+    CharacterController->UnPossess();
+  }
 }

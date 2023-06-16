@@ -7,11 +7,12 @@
 #include "CharacterBase.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
-  FTestDelegate,
-  float,
-  Damage
-);
+UENUM(BlueprintType)
+enum EMovementState
+{
+  CANT_MOVE UMETA(DisplayName="Can't move"),
+  CAN_MOVE UMETA(DisplayName="Can move"),
+};
 
 UCLASS()
 class TPS_API ACharacterBase : public ACharacter
@@ -21,11 +22,9 @@ class TPS_API ACharacterBase : public ACharacter
 public:
   ACharacterBase();
 
-  UPROPERTY(
-    BlueprintAssignable
-  )
-  FTestDelegate TestDelegate;
 
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+  bool IsDeath = false;
 
   UPROPERTY(
     EditInstanceOnly,
@@ -76,4 +75,8 @@ public:
     AController* EventInstigator,
     AActor* DamageCauser
   ) override;
+
+  UFUNCTION()
+  virtual void Death();
 };
+
