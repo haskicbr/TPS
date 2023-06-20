@@ -23,6 +23,9 @@ public:
   ATPSHud * HUD;
 
 
+  UPROPERTY(VisibleAnywhere)
+  bool IsUIModeActive = false;
+
   virtual void SetupInputComponent() override;
   virtual void MoveForward(float Value);
   virtual void MoveRight(float Value);

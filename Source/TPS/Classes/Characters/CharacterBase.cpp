@@ -69,9 +69,8 @@ float ACharacterBase::TakeDamage(
 
 void ACharacterBase::Death()
 {
-  this->GetMovementComponent()->Deactivate();
   IsDeath = true;
-
+  this->GetMovementComponent()->Deactivate();
   AController* CharacterController = Cast<AController>(
     GetController()
   );
@@ -80,9 +79,5 @@ void ACharacterBase::Death()
   {
     CharacterController->UnPossess();
   }
-
-
   GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-
 }

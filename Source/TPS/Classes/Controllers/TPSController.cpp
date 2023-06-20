@@ -28,7 +28,6 @@ void ATPSController::SetupInputComponent()
   );
 
 
-
   InputComponent->BindAction(
     "Fire",
     IE_Pressed,
@@ -99,24 +98,32 @@ void ATPSController::BeginPlay()
   );
   ControlledCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 
-  HUD = Cast<ATPSHud>(GetHUD());
+  HUD = Cast<ATPSHud>(
+    GetHUD()
+  );
 
   InputComponent->BindAction(
     "Inventory",
     IE_Pressed,
     HUD,
-    &ATPSHud::ShowInventory
+    &ATPSHud::ChangeVisible
   );
 
 
-
-
-  ControlledCharacter->AttributesComponent->OnChangeHealth.AddDynamic(HUD, &ATPSHud::UpdateHealth);
+  ControlledCharacter->AttributesComponent->OnChangeHealth.AddDynamic(
+    HUD,
+    &ATPSHud::UpdateHealth
+  );
 }
 
 
 void ATPSController::MoveForward(float Value)
 {
+  if (IsUIModeActive)
+  {
+    return;
+  }
+
   float mouseX;
   float mouseY;
   GetMousePosition(
@@ -141,7 +148,6 @@ void ATPSController::MoveForward(float Value)
     )
   );
 
-
   ControlledCharacter->MoveForward(
     Value
   );
@@ -149,6 +155,11 @@ void ATPSController::MoveForward(float Value)
 
 void ATPSController::MoveRight(float Value)
 {
+  if (IsUIModeActive)
+  {
+    return;
+  }
+
   ControlledCharacter->MoveRight(
     Value
   );
@@ -156,6 +167,11 @@ void ATPSController::MoveRight(float Value)
 
 void ATPSController::Turn(float Value)
 {
+  if (IsUIModeActive)
+  {
+    return;
+  }
+
   ControlledCharacter->Turn(
     Value
   );
@@ -163,6 +179,11 @@ void ATPSController::Turn(float Value)
 
 void ATPSController::LookUp(float Value)
 {
+  if (IsUIModeActive)
+  {
+    return;
+  }
+
   ControlledCharacter->LookUp(
     Value
   );
@@ -170,11 +191,22 @@ void ATPSController::LookUp(float Value)
 
 void ATPSController::Jump()
 {
+  if (IsUIModeActive)
+  {
+    return;
+  }
+
   ControlledCharacter->Jump();
 }
 
 void ATPSController::Fire()
 {
+  if (IsUIModeActive)
+  {
+    return;
+  }
+
+
   if (ControlledCharacter->Weapon)
   {
     const USkeletalMeshComponent* SkeletalMeshComponent = nullptr;
@@ -325,9 +357,14 @@ void ATPSController::UpdateTargetPointFromCenterScreen()
   FCollisionQueryParams CollisionParams;
 
   FVector2d ViewportSize;
-  GEngine->GameViewport->GetViewportSize(ViewportSize);
+  GEngine->GameViewport->GetViewportSize(
+    ViewportSize
+  );
 
-  FVector2D CrossHairLocation(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+  FVector2D CrossHairLocation(
+    ViewportSize.X / 2.f,
+    ViewportSize.Y / 2.f
+  );
   FVector WorldLocation;
   FVector WorldDirection;
 

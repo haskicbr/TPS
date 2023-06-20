@@ -1,6 +1,7 @@
 #include "Projectile.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystem.h"
 #include "Sound/SoundCue.h"
 
 

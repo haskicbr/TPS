@@ -22,5 +22,10 @@ public class TPS : ModuleRules
             "AIModule",
             "GameplayTasks"
         });
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
+            "Slate",
+            "SlateCore",
+        });
     }
 }

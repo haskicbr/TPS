@@ -28,6 +28,13 @@ public:
   class UInventoryWidget* InventoryWidget;
 
   UPROPERTY()
+  class ATPSController* Controller;
+
+  UPROPERTY()
+  class ACharacterPlayer * Character;
+
+
+  UPROPERTY()
   float CurrentTime = 0.0;
 
   UPROPERTY()
@@ -62,7 +69,6 @@ public:
   void UpdateHealth(float Health, float MaxHealth) ;
 
   UFUNCTION()
-  void ShowInventory();
-
+  void ChangeVisible();
 
 };

@@ -1,6 +1,8 @@
 #include "PickupItem.h"
 #include "InventoryComponent.h"
 #include "Characters/CharacterBase.h"
+#include "Characters/CharacterPlayer.h"
+#include "Controllers/TPSController.h"
 #include "Weapon/WeaponBase.h"
 
 APickupItem::APickupItem()
@@ -70,8 +72,12 @@ void APickupItem::OnOverlapBegin(
     OtherActor
   );
 
-  if (CharacterBase && InventoryItem)
+  if (CharacterBase && InventoryItem && CharacterBase->InventoryComponent)
   {
+    CharacterBase->InventoryComponent->AddItem(
+      InventoryItem
+    );
+
     if (InventoryItem->InventoryType == EInventoryItemType::WeaponRange)
     {
       this->InventoryItem = InventoryItem;
@@ -106,9 +112,6 @@ void APickupItem::OnOverlapBegin(
       }
     }
 
-    CharacterBase->InventoryComponent->AddItem(
-      InventoryItem
-    );
 
     Destroy();
   }

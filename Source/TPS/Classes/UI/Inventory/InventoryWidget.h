@@ -2,7 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "InventoryItemWidget.h"
+#include "InventorySlotWidget.h"
 #include "Components/UniformGridPanel.h"
+#include "Components/Inventory/InventoryComponent.h"
 #include "InventoryWidget.generated.h"
 
 
@@ -14,4 +17,21 @@ class TPS_API UInventoryWidget : public UUserWidget
 public:
   UPROPERTY(EditAnywhere, meta = (BindWidget))
   UUniformGridPanel* InventoryGrid;
+
+  UPROPERTY(EditAnywhere)
+  UInventoryComponent* InventoryComponent;
+
+  UPROPERTY()
+  TMap<FVector2D, UInventorySlotWidget*> InventorySlots;
+
+  UPROPERTY(EditAnywhere)
+  TSubclassOf<UInventoryItemWidget> InventoryItemClass;
+
+  UPROPERTY(EditAnywhere)
+  TSubclassOf<UInventorySlotWidget> InventorySlotClass;
+
+
+  virtual void NativeConstruct() override;
+
+  void UpdateInventory();
 };
