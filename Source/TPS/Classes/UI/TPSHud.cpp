@@ -6,15 +6,6 @@
 #include "Controllers/TPSController.h"
 #include "Kismet/GameplayStatics.h"
 
-void ATPSHud::BeginPlay()
-{
-  Super::BeginPlay();
-
-  Controller = Cast<ATPSController>(
-    GetOwningPlayerController()
-  );
-  Character = Controller->ControlledCharacter;
-}
 
 void ATPSHud::Tick(float DeltaSeconds)
 {
@@ -38,9 +29,15 @@ void ATPSHud::Tick(float DeltaSeconds)
   }
 }
 
-
 void ATPSHud::InitialWidgets()
 {
+
+  Controller = Cast<ATPSController>(
+    GetOwningPlayerController()
+  );
+  Character = Controller->ControlledCharacter;
+
+
   CharacterOverlay = CreateWidget<UTestWidget>(
     GetOwningPlayerController(),
     CharacterOverlayClass
@@ -55,13 +52,13 @@ void ATPSHud::InitialWidgets()
     GetOwningPlayerController(),
     InventoryWidgetClass
   );
+
   InventoryWidget->InventoryComponent = Character->InventoryComponent;
 
   if (CharacterOverlay)
   {
     CharacterOverlay->AddToViewport();
     MainHudWidget->AddToViewport();
-    InventoryWidget->AddToViewport();
   }
 }
 
@@ -99,7 +96,7 @@ void ATPSHud::ChangeVisible()
   else
   {
     Controller->IsUIModeActive = true;
-    Controller->SetInputMode(FInputModeUIOnly());
+    Controller->SetInputMode(FInputModeGameAndUI());
 
     Controller->SetShowMouseCursor(true);
     InventoryWidget->AddToViewport();

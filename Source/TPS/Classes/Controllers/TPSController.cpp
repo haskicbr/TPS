@@ -93,6 +93,7 @@ void ATPSController::SetupInputComponent()
 void ATPSController::BeginPlay()
 {
   Super::BeginPlay();
+
   ControlledCharacter = Cast<ACharacterPlayer>(
     GetCharacter()
   );
@@ -109,6 +110,7 @@ void ATPSController::BeginPlay()
     &ATPSHud::ChangeVisible
   );
 
+  HUD->InitialWidgets();
 
   ControlledCharacter->AttributesComponent->OnChangeHealth.AddDynamic(
     HUD,
@@ -139,6 +141,7 @@ void ATPSController::MoveForward(float Value)
       mouseX
     )
   );
+
   GEngine->AddOnScreenDebugMessage(
     13,
     4.5f,

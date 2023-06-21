@@ -14,9 +14,9 @@ void UInventoryWidget::UpdateInventory()
     )
   );
 
-  for (int Row = 1; Row <= 10; Row++)
+  for (int Row = 1; Row <= 3; Row++)
   {
-    for (int Column = 1; Column <= 10; Column++)
+    for (int Column = 1; Column <=3 ; Column++)
     {
       if (InventorySlotClass)
       {
@@ -34,6 +34,35 @@ void UInventoryWidget::UpdateInventory()
         );
       }
     }
+  }
+
+
+  auto InventorySlotsArray = InventorySlots.Array();
+  auto InventoryItemsArray = InventoryComponent->Inventory.Array();
+
+
+  int ArrayIterator = 0;
+  for (auto InventoryItem : InventoryItemsArray)
+  {
+    InventoryItem.Value->Count;
+
+    if (InventorySlotsArray.IsValidIndex(
+      ArrayIterator
+    ))
+    {
+      const UInventorySlotWidget* SlotWidget = InventorySlotsArray[ArrayIterator].Value;
+
+      UInventoryItemWidget* InventoryItemWidget = CreateWidget<UInventoryItemWidget>(
+        GetWorld(),
+        InventoryItemClass
+      );
+      InventoryItemWidget->SetInventoryItem(InventoryItem.Value);
+
+      SlotWidget->InventoryItemContainer->AddChild(
+        InventoryItemWidget
+      );
+    }
+    ArrayIterator++;
   }
 }
 

@@ -60,13 +60,17 @@ public:
     EditDefaultsOnly,
     BlueprintReadOnly
   )
-  TSubclassOf<class AActor> ActorInWorld;
+  TSubclassOf<AActor> ActorInWorld;
 
+  UPROPERTY(
+    EditDefaultsOnly,
+    BlueprintReadOnly
+  )
+  TSubclassOf<AActor> PickupActor;
 
   UPROPERTY(
     EditAnywhere,
     BlueprintReadOnly
   )
-
   UTexture2D* Icon;
 };

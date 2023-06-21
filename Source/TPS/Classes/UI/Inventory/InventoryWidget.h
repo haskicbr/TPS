@@ -15,11 +15,12 @@ class TPS_API UInventoryWidget : public UUserWidget
   GENERATED_BODY()
 
 public:
-  UPROPERTY(EditAnywhere, meta = (BindWidget))
-  UUniformGridPanel* InventoryGrid;
 
   UPROPERTY(EditAnywhere)
   UInventoryComponent* InventoryComponent;
+
+  UPROPERTY(EditAnywhere, meta = (BindWidget))
+  UUniformGridPanel* InventoryGrid;
 
   UPROPERTY()
   TMap<FVector2D, UInventorySlotWidget*> InventorySlots;

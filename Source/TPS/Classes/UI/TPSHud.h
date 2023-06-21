@@ -14,7 +14,6 @@ UCLASS()
 class TPS_API ATPSHud : public AHUD
 {
   GENERATED_BODY()
-  virtual void BeginPlay() override;
   virtual void Tick(float DeltaSeconds) override;
 
 public:
