@@ -20,7 +20,8 @@ public class TPS : ModuleRules
             "GameplayTags",
             "NavigationSystem",
             "AIModule",
-            "GameplayTasks"
+            "GameplayTasks",
+            "ChaosVehicles"
         });
         PublicDependencyModuleNames.AddRange(new string[]
         {
