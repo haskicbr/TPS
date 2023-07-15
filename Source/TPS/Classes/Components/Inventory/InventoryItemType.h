@@ -6,6 +6,9 @@
 UENUM(BlueprintType)
 enum EInventoryItemType
 {
+  Undefined = 0 UMETA(
+    DisplayName = "WeaponMelee"
+  ),
   WeaponMelee UMETA(
     DisplayName = "WeaponMelee"
   ),

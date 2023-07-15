@@ -7,6 +7,8 @@
 void ATPSGameState::BeginPlay()
 {
   Super::BeginPlay();
+
+  FillInventoryData();
 }
 
 
@@ -18,10 +20,7 @@ void ATPSGameState::FillInventoryData()
     InventoryWorldObjectsTablePath.ResolveObject()
   );
 
-  if (DT)
-  {
-  }
-  else
+  if (!DT)
   {
     DT = Cast<UDataTable>(
       InventoryWorldObjectsTablePath.TryLoad()
@@ -39,6 +38,12 @@ void ATPSGameState::FillInventoryData()
 
   for (FInventoryWorldObjectParams* Row : AllRows)
   {
+    GEngine->AddOnScreenDebugMessage(
+     -1,
+     4.5f,
+     FColor::Yellow,
+     Row->PickupItem->StaticClass()->GetName()
+     );
     // ....
   }
 }

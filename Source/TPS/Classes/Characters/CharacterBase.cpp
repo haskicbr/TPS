@@ -69,8 +69,9 @@ float ACharacterBase::TakeDamage(
 
 void ACharacterBase::Death()
 {
-  IsDeath = true;
+  bIsDeath = true;
   this->GetMovementComponent()->Deactivate();
+
   AController* CharacterController = Cast<AController>(
     GetController()
   );
@@ -79,5 +80,12 @@ void ACharacterBase::Death()
   {
     CharacterController->UnPossess();
   }
+
+
+  GetCapsuleComponent()->RemoveFromRoot();
   GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+  GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+  GetMesh()->SetCollisionProfileName("Ragdoll");
+  GetMesh()->SetSimulatePhysics(true);
 }

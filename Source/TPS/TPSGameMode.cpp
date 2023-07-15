@@ -8,7 +8,7 @@
 
 ATPSGameMode::ATPSGameMode()
 {
-	static ConstructorHelpers::FClassFinder<ACharacterBase> PlayerPawnBPClass(TEXT("/Game/Main/Blueprints/Characters/BP_CharacterPlayer"));
+	static ConstructorHelpers::FClassFinder<ACharacterBase> PlayerPawnBPClass(TEXT("/Game/Main/Blueprints/Characters/Player/BP_CharacterPlayerFirstPerson"));
   static ConstructorHelpers::FClassFinder<ATPSHud> HudClass(TEXT("/Game/Main/Blueprints/Game/BP_TPSHud"));
   static ConstructorHelpers::FClassFinder<ATPSGameState> GameStateInitial(TEXT("/Game/Main/Blueprints/Game/BP_GameState"));
 

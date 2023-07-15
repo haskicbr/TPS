@@ -3,8 +3,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
 #include "Components/Inventory/InventoryItem.h"
+#include "Components/Inventory/InventoryItemParams.h"
 #include "SaveGameData.generated.h"
 
+
+class ACharacterBase;
 UCLASS()
 class TPS_API USaveGameData : public USaveGame
 {
@@ -16,15 +19,19 @@ public:
   )
   FTransform CharacterTransform;
 
-
+  UPROPERTY(
+    VisibleAnywhere
+  )
+  ACharacterBase* Character;
 
   UPROPERTY(
     VisibleAnywhere
   )
-  AActor* Character;
+  TMap<FString, UInventoryItem*> Inventory;
 
-  UPROPERTY(
-    VisibleAnywhere
-  )
-  UInventoryItem* InventoryItem;
+  UPROPERTY(VisibleAnywhere)
+  TArray<FInventoryItemParams> Objects;
+
+  UPROPERTY(EditAnywhere)
+  TArray<TSubclassOf<AActor>> TestsObjects;
 };

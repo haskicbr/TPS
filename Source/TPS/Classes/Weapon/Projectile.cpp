@@ -79,9 +79,6 @@ void AProjectile::OnHit(
   const FHitResult& Hit
 )
 {
-
-
-
   if (OtherActor)
   {
     UGameplayStatics::ApplyDamage(
@@ -91,6 +88,15 @@ void AProjectile::OnHit(
       OtherActor,
       nullptr
     );
+  }
+
+
+  /* TODO: add phys impulse (for rag doll for action) */
+  /* TODO: not working impulse we need to fix this */
+  if(HitComp)
+  {
+    HitComp->SetSimulatePhysics(true);
+    HitComp->AddImpulseAtLocation(NormalImpulse * -1000, Hit.Location +2);
   }
 
   Destroy();

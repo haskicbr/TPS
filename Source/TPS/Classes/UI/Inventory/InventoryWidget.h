@@ -16,6 +16,11 @@ class TPS_API UInventoryWidget : public UUserWidget
 
 public:
 
+
+  UPROPERTY(VisibleAnywhere)
+  bool bIsInitialised = false;
+
+
   UPROPERTY(EditAnywhere)
   UInventoryComponent* InventoryComponent;
 

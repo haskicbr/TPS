@@ -15,7 +15,6 @@ void ATPSHud::Tick(float DeltaSeconds)
 
   CurrentTime += DeltaSeconds;
 
-
   if (CharacterOverlay && MainHudWidget)
   {
     auto Text = FText::FromString(
@@ -97,7 +96,6 @@ void ATPSHud::ChangeVisible()
   {
     Controller->IsUIModeActive = true;
     Controller->SetInputMode(FInputModeGameAndUI());
-
     Controller->SetShowMouseCursor(true);
     InventoryWidget->AddToViewport();
   }

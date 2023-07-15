@@ -8,6 +8,7 @@
 #include "TPS/Structures/ProjectileParams.h"
 #include "Projectile.generated.h"
 
+
 UCLASS()
 class TPS_API AProjectile : public AActor
 {

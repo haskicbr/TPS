@@ -3,7 +3,12 @@
 void UInventoryItemWidget::SetInventoryItem(UInventoryItem * Item)
 {
   InventoryItem = Item;
-  Icon->SetBrushFromTexture(Item->Icon);
+
+
+  if(IsValid(Item))
+  {
+    //Icon->SetBrushFromTexture(Item->Icon);
+  }
 }
 
 
@@ -34,7 +39,17 @@ FReply UInventoryItemWidget::NativeOnMouseButtonDoubleClick(
     )
   );
 
-  DragDropOperation->DefaultDragVisual = this;
+
+  auto DragVisual =   CreateWidget<UInventoryItemWidget>(
+    GetWorld(),
+    this->StaticClass()
+  );
+
+  DragVisual->Icon = this->Icon;
+
+  DragVisual->AddToViewport();
+
+  DragDropOperation->DefaultDragVisual =  DragVisual;
   DragDropOperation->Payload = this;
   DragDropOperation->Pivot = EDragPivot::MouseDown;
 
@@ -44,8 +59,6 @@ FReply UInventoryItemWidget::NativeOnMouseButtonDoubleClick(
     ESlateVisibility::Hidden
   );
 }
-
-
 
  void UInventoryItemWidget::NativeOnDragCancelled(
   const FDragDropEvent& InDragDropEvent,
@@ -83,11 +96,14 @@ FReply UInventoryItemWidget::NativeOnMouseButtonDown(
     return FReply::Handled();
   }
 
+
+
   FEventReply Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(
     InMouseEvent,
     this,
     EKeys::LeftMouseButton
   );
+
   return Reply.NativeReply;
 }
 

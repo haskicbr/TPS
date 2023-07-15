@@ -30,7 +30,7 @@ public:
   class ATPSController* Controller;
 
   UPROPERTY()
-  class ACharacterPlayer * Character;
+  TSoftObjectPtr<class ACharacterPlayer> Character;
 
 
   UPROPERTY()

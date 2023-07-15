@@ -27,54 +27,6 @@ void ATPSController::SetupInputComponent()
     InputComponent
   );
 
-
-  InputComponent->BindAction(
-    "Fire",
-    IE_Pressed,
-    this,
-    &ATPSController::Fire
-  );
-
-
-  InputComponent->BindAxis(
-    "MoveForward",
-    this,
-    &ATPSController::MoveForward
-  );
-
-  InputComponent->BindAxis(
-    "MoveRight",
-    this,
-    &ATPSController::MoveRight
-  );
-
-  InputComponent->BindAxis(
-    "Turn",
-    this,
-    &ATPSController::Turn
-  );
-
-  InputComponent->BindAxis(
-    "LookUp",
-    this,
-    &ATPSController::LookUp
-  );
-
-  InputComponent->BindAction(
-    "Jump",
-    IE_Pressed,
-    this,
-    &ATPSController::Jump
-  );
-
-  InputComponent->BindAction(
-    "Crouch",
-    IE_Pressed,
-    this,
-    &ATPSController::Jump
-  );
-
-
   InputComponent->BindAction(
     "SaveGame",
     IE_Pressed,
@@ -117,7 +69,6 @@ void ATPSController::BeginPlay()
     &ATPSHud::UpdateHealth
   );
 }
-
 
 void ATPSController::MoveForward(float Value)
 {
@@ -202,115 +153,47 @@ void ATPSController::Jump()
   ControlledCharacter->Jump();
 }
 
-void ATPSController::Fire()
-{
-  if (IsUIModeActive)
-  {
-    return;
-  }
-
-
-  if (ControlledCharacter->Weapon)
-  {
-    const USkeletalMeshComponent* SkeletalMeshComponent = nullptr;
-
-    if (ControlledCharacter)
-    {
-      SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
-        ControlledCharacter->GetComponentByClass(
-          USkeletalMeshComponent::StaticClass()
-        )
-      );
-    }
-
-    if (SkeletalMeshComponent)
-    {
-      UCameraComponent* CameraComponent = Cast<UCameraComponent>(
-        ControlledCharacter->GetComponentByClass(
-          UCameraComponent::StaticClass()
-        )
-      );
-
-      ControlledCharacter->Weapon->Fire(
-        TargetPointFromCenterScreen
-      );
-    }
-  }
-
-  //UGameplayStatics::ApplyDamage(GetWorld(), )
-}
-
 void ATPSController::SaveGame()
 {
+  ControlledCharacter->GetMesh()->SetSimulatePhysics(!ControlledCharacter->GetMesh()->IsSimulatingPhysics());
+
   USaveGameData* TestSaveGame = Cast<USaveGameData>(
     UGameplayStatics::CreateSaveGameObject(
       USaveGameData::StaticClass()
     )
   );
-  TestSaveGame->CharacterTransform = ControlledCharacter->GetTransform();
 
+  auto Obj = FInventoryItemParams();
+  Obj.Count = 1000;
 
-  UInventoryItem* InventoryItem = NewObject<UInventoryItem>();
-  InventoryItem->Count += 1;
-  InventoryItem->TimeSpan = FDateTime::Now().GetTimeOfDay().ToString();
+  Obj.InitialActor = ACharacterBase::StaticClass();
 
-  TestSaveGame->InventoryItem = InventoryItem;
+  TestSaveGame->Objects.Add(Obj);
 
-  GEngine->AddOnScreenDebugMessage(
-    -1,
-    4.5f,
-    FColor::Purple,
-    TestSaveGame->InventoryItem->TimeSpan
+  for (auto Obj123 : TestSaveGame->Objects)
+  {
+    GEngine->AddOnScreenDebugMessage(
+      -1,
+      4.5f,
+      FColor::Red,
+      FString::FromInt(
+        Obj123.Count
+      )
+    );
+  }
+
+  UGameplayStatics::SaveGameToSlot(
+    TestSaveGame,
+    FString(
+      "test"
+    ),
+    1
   );
 }
 
 void ATPSController::LoadGame()
 {
-  UObject* ClassPackage = ANY_PACKAGE;
-
-  const AActor* ObjectToSpawn = FindObject<AActor>(
-    ClassPackage,
-    TEXT(
-      "Game/Main/Blueprints/BP_TriggerLight"
-    )
-  );
-
-  FActorSpawnParameters SpawnParameters;
-
-
-  /*const ConstructorHelpers::FObjectFinder<UBlueprint> BlueprintClass(TEXT("Blueprint'/Game/Main/Blueprints/BP_TriggerLight'"));
-  auto mBlueprintClass = static_cast<UClass*>(BlueprintClass.Object->GeneratedClass);*/
-
-  const FString SpawnObjectName = "testObject" + FGuid::NewGuid().ToString();
-
-  SpawnParameters.Owner = GetOwner();
-  SpawnParameters.Instigator = nullptr;
-  SpawnParameters.Name = FName(
-    SpawnObjectName
-  );
-
-  GEngine->AddOnScreenDebugMessage(
-    -1,
-    4.5f,
-    FColor::Purple,
-    ObjectToSpawn->StaticClass()->GetName()
-  );
-
-
-  GetWorld()->SpawnActor<ATriggeredLight>(
-    ATriggeredLight::StaticClass(),
-    ControlledCharacter->GetActorLocation() + ControlledCharacter->GetActorForwardVector() * 2,
-    FRotator(
-      0,
-      0,
-      0
-    ),
-    SpawnParameters
-  );
-
-  return;
-
-
+  GEngine->AddOnScreenDebugMessage(-1,1000,FColor::Red, "qweqweqweqweqweqwe");
   USaveGameData* TestSaveGame = Cast<USaveGameData>(
     UGameplayStatics::LoadGameFromSlot(
       FString(
@@ -322,19 +205,21 @@ void ATPSController::LoadGame()
 
   if (TestSaveGame)
   {
-    ControlledCharacter->SetActorTransform(
-      TestSaveGame->CharacterTransform
-    );
+    for (auto Obj : TestSaveGame->Objects)
+    {
+      GEngine->AddOnScreenDebugMessage(
+        -1,
+        4.5f,
+        FColor::Red,
+        FString::FromInt(
+          Obj.Count
+        )
+      );
 
-    GEngine->AddOnScreenDebugMessage(
-      -1,
-      4.5f,
-      FColor::Purple,
-      TestSaveGame->InventoryItem->TimeSpan
-    );
+      GetWorld()->SpawnActor<AActor>(Obj.InitialActor, ControlledCharacter->GetActorLocation(), ControlledCharacter->GetActorRotation());
+    }
   }
 }
-
 
 void ATPSController::Tick(const float DeltaSeconds)
 {
@@ -345,7 +230,6 @@ void ATPSController::Tick(const float DeltaSeconds)
   UpdateTargetPointFromCenterScreen();
   UpdateAudioListener();
 }
-
 
 void ATPSController::UpdateTargetPointFromCenterScreen()
 {
@@ -406,7 +290,6 @@ void ATPSController::UpdateTargetPointFromCenterScreen()
     TargetPointFromCenterScreen = EndTrace;
   }
 
-
   DrawDebugLine(
     GetWorld(),
     StartTrace,
@@ -426,6 +309,6 @@ void ATPSController::UpdateAudioListener()
       0,
       2
     ),
-    ControlledCharacter->GetActorRotation() * -1 + ControlledCharacter->CameraComponent->GetComponentRotation()
+    GetPawn()->GetActorRotation() * -1 + ControlledCharacter->CameraComponent->GetComponentRotation()
   );
 }

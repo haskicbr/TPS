@@ -42,7 +42,7 @@ void UInventoryWidget::UpdateInventory()
 
 
   int ArrayIterator = 0;
-  for (auto InventoryItem : InventoryItemsArray)
+  for (const TTuple<FString, UInventoryItem*> InventoryItem : InventoryItemsArray)
   {
     InventoryItem.Value->Count;
 
@@ -66,8 +66,15 @@ void UInventoryWidget::UpdateInventory()
   }
 }
 
+
 void UInventoryWidget::NativeConstruct()
 {
   Super::NativeConstruct();
-  UpdateInventory();
+  
+  if (!bIsInitialised)
+  {
+    UpdateInventory();
+    bIsInitialised = true;
+  }
+
 }

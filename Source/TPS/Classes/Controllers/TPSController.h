@@ -8,22 +8,26 @@
 UCLASS()
 class TPS_API ATPSController : public APlayerController
 {
-	GENERATED_BODY()
+  GENERATED_BODY()
+
 public:
   ATPSController();
 
-  UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+  UPROPERTY(
+    VisibleAnywhere,
+    BlueprintReadOnly
+  )
   class ACharacterPlayer* ControlledCharacter;
-
 
   UPROPERTY()
   FVector TargetPointFromCenterScreen = FVector();
 
   UPROPERTY()
-  ATPSHud * HUD;
+  ATPSHud* HUD;
 
-
-  UPROPERTY(VisibleAnywhere)
+  UPROPERTY(
+    VisibleAnywhere
+  )
   bool IsUIModeActive = false;
 
   virtual void SetupInputComponent() override;
@@ -32,10 +36,8 @@ public:
   virtual void Turn(float Value);
   virtual void LookUp(float Value);
   virtual void Jump();
-  virtual void Fire();
   virtual void SaveGame();
   virtual void LoadGame();
-
   virtual void UpdateTargetPointFromCenterScreen();
   virtual void UpdateAudioListener();
 

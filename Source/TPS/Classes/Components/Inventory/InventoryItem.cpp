@@ -2,4 +2,7 @@
 
 UInventoryItem::UInventoryItem()
 {
+
+
+
 }

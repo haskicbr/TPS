@@ -24,7 +24,7 @@ public:
 
 
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-  bool IsDeath = false;
+  bool bIsDeath = false;
 
   UPROPERTY(
     EditInstanceOnly,
@@ -64,9 +64,9 @@ protected:
 
 public:
   virtual void Tick(float DeltaTime) override;
-
   virtual void MoveForward(float ForwardAxis);
   virtual void MoveRight(float RightAxis);
+
 
   UFUNCTION()
   virtual float TakeDamage(
@@ -79,4 +79,5 @@ public:
   UFUNCTION()
   virtual void Death();
 };
+
 

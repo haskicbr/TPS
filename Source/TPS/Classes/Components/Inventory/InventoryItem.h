@@ -1,9 +1,11 @@
 #pragma once
-
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "InventoryItemType.h"
 #include "InventoryItem.generated.h"
+
+
+class UInventoryComponent;
 
 UCLASS(
   Blueprintable,
@@ -23,31 +25,49 @@ public:
   TEnumAsByte<EInventoryItemType> InventoryType = EInventoryItemType::Consumable;
 
   UPROPERTY(
+    VisibleAnywhere
+  )
+  FVector2D SlotPositionInventory;
+
+  UPROPERTY(
+    VisibleAnywhere
+  )
+  FString SlotAttachedName;
+
+  UPROPERTY(
+    VisibleAnywhere
+  )
+  UInventoryComponent* InventoryComponent;
+
+  UPROPERTY(
     EditAnywhere,
     BlueprintReadWrite
   )
   int32 Count = 1;
 
   UPROPERTY(
-    EditAnywhere,
+    EditInstanceOnly,
     BlueprintReadOnly
   )
   int32 CountMax = 1;
 
   UPROPERTY(
-    EditAnywhere,
+  EditInstanceOnly,
+  BlueprintReadOnly
+  )
+  bool bIsUsable = false;
+  UPROPERTY(
+    EditInstanceOnly,
     BlueprintReadOnly
   )
-  bool IsUsable = false;
-  UPROPERTY(
-    EditAnywhere
-  )
-  bool IsCountable = false;
+  bool bIsCountable = false;
 
-  UPROPERTY(
-    EditAnywhere
-  )
-  FString TimeSpan = "";
+  UPROPERTY(VisibleAnywhere)
+  bool bIsAttachable = false;
+
+  UPROPERTY(VisibleAnywhere)
+  FString AttachSlotId;
+
 
   UPROPERTY(
     EditAnywhere,

@@ -28,6 +28,8 @@ class TPS_API UAttributesComponent : public UActorComponent
   GENERATED_BODY()
 
 public:
+
+  
   UAttributesComponent();
 
 protected:
