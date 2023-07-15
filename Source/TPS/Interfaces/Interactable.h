@@ -4,18 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "CanActivate.generated.h"
+#include "Interactable.generated.h"
 
 UINTERFACE(MinimalAPI, Blueprintable)
-class UCanActivate : public UInterface
+class UInteractable : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class TPS_API ICanActivate
+class TPS_API IInteractable
 {
 	GENERATED_BODY()
 public:
-	virtual void Activate() {};
-	virtual void Deactivate() {};
 };
