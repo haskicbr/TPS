@@ -82,7 +82,7 @@ void ACharacterBase::Death()
   }
 
 
-  GetCapsuleComponent()->RemoveFromRoot();
+  //GetCapsuleComponent()->RemoveFromRoot();
   GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
   GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

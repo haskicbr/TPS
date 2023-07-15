@@ -49,6 +49,7 @@ void ATPSController::BeginPlay()
   ControlledCharacter = Cast<ACharacterPlayer>(
     GetCharacter()
   );
+
   ControlledCharacter->GetCharacterMovement()->bOrientRotationToMovement = false;
 
   HUD = Cast<ATPSHud>(
@@ -70,92 +71,11 @@ void ATPSController::BeginPlay()
   );
 }
 
-void ATPSController::MoveForward(float Value)
-{
-  if (IsUIModeActive)
-  {
-    return;
-  }
-
-  float mouseX;
-  float mouseY;
-  GetMousePosition(
-    mouseX,
-    mouseY
-  );
-
-  GEngine->AddOnScreenDebugMessage(
-    12,
-    4.5f,
-    FColor::Red,
-    FString::FromInt(
-      mouseX
-    )
-  );
-
-  GEngine->AddOnScreenDebugMessage(
-    13,
-    4.5f,
-    FColor::Red,
-    FString::FromInt(
-      mouseY
-    )
-  );
-
-  ControlledCharacter->MoveForward(
-    Value
-  );
-}
-
-void ATPSController::MoveRight(float Value)
-{
-  if (IsUIModeActive)
-  {
-    return;
-  }
-
-  ControlledCharacter->MoveRight(
-    Value
-  );
-}
-
-void ATPSController::Turn(float Value)
-{
-  if (IsUIModeActive)
-  {
-    return;
-  }
-
-  ControlledCharacter->Turn(
-    Value
-  );
-}
-
-void ATPSController::LookUp(float Value)
-{
-  if (IsUIModeActive)
-  {
-    return;
-  }
-
-  ControlledCharacter->LookUp(
-    Value
-  );
-}
-
-void ATPSController::Jump()
-{
-  if (IsUIModeActive)
-  {
-    return;
-  }
-
-  ControlledCharacter->Jump();
-}
-
 void ATPSController::SaveGame()
 {
-  ControlledCharacter->GetMesh()->SetSimulatePhysics(!ControlledCharacter->GetMesh()->IsSimulatingPhysics());
+  ControlledCharacter->GetMesh()->SetSimulatePhysics(
+    !ControlledCharacter->GetMesh()->IsSimulatingPhysics()
+  );
 
   USaveGameData* TestSaveGame = Cast<USaveGameData>(
     UGameplayStatics::CreateSaveGameObject(
@@ -168,7 +88,9 @@ void ATPSController::SaveGame()
 
   Obj.InitialActor = ACharacterBase::StaticClass();
 
-  TestSaveGame->Objects.Add(Obj);
+  TestSaveGame->Objects.Add(
+    Obj
+  );
 
   for (auto Obj123 : TestSaveGame->Objects)
   {
@@ -193,7 +115,12 @@ void ATPSController::SaveGame()
 
 void ATPSController::LoadGame()
 {
-  GEngine->AddOnScreenDebugMessage(-1,1000,FColor::Red, "qweqweqweqweqweqwe");
+  GEngine->AddOnScreenDebugMessage(
+    -1,
+    1000,
+    FColor::Red,
+    "qweqweqweqweqweqwe"
+  );
   USaveGameData* TestSaveGame = Cast<USaveGameData>(
     UGameplayStatics::LoadGameFromSlot(
       FString(
@@ -216,7 +143,11 @@ void ATPSController::LoadGame()
         )
       );
 
-      GetWorld()->SpawnActor<AActor>(Obj.InitialActor, ControlledCharacter->GetActorLocation(), ControlledCharacter->GetActorRotation());
+      GetWorld()->SpawnActor<AActor>(
+        Obj.InitialActor,
+        ControlledCharacter->GetActorLocation(),
+        ControlledCharacter->GetActorRotation()
+      );
     }
   }
 }
@@ -228,7 +159,7 @@ void ATPSController::Tick(const float DeltaSeconds)
   );
 
   UpdateTargetPointFromCenterScreen();
-  UpdateAudioListener();
+
 }
 
 void ATPSController::UpdateTargetPointFromCenterScreen()
@@ -283,9 +214,11 @@ void ATPSController::UpdateTargetPointFromCenterScreen()
   if (TraceHit.bBlockingHit)
   {
     TargetPointFromCenterScreen = TraceHit.ImpactPoint;
+    TargetHitFromCenterScreen = &TraceHit;
   }
   else
   {
+    TargetHitFromCenterScreen = nullptr;
     //TargetPointFromCenterScreen = WorldLocation + CameraComponent->GetForwardVector() * 80000.f;
     TargetPointFromCenterScreen = EndTrace;
   }
@@ -300,15 +233,4 @@ void ATPSController::UpdateTargetPointFromCenterScreen()
   );
 }
 
-void ATPSController::UpdateAudioListener()
-{
-  SetAudioListenerOverride(
-    ControlledCharacter->GetRootComponent(),
-    FVector(
-      0,
-      0,
-      2
-    ),
-    GetPawn()->GetActorRotation() * -1 + ControlledCharacter->CameraComponent->GetComponentRotation()
-  );
-}
+

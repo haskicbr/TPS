@@ -32,6 +32,10 @@ ACharacterPlayer::ACharacterPlayer()
     )
   );
   Montage = MontageAsset.Object;
+
+  PlayerController = Cast<ATPSController>(
+    GetController()
+  );
 }
 
 void ACharacterPlayer::MoveForward(float ForwardAxis)
@@ -84,6 +88,58 @@ void ACharacterPlayer::PrintFire()
   );
 }
 
+void ACharacterPlayer::Tick(float DeltaSeconds)
+{
+  Super::Tick(
+    DeltaSeconds
+  );
+
+  if (!PlayerController)
+  {
+    return;
+  }
+
+  UpdateAudioListener();
+
+  GEngine->AddOnScreenDebugMessage(
+    -1,
+    4.5f,
+    FColor::Red,
+    FString::FromInt(
+      PlayerController->TargetPointFromCenterScreen.X
+    )
+  );
+
+  if (PlayerController->TargetHitFromCenterScreen)
+  {
+    if (AActor* TraceActor = PlayerController->TargetHitFromCenterScreen->GetActor())
+    {
+      GEngine->AddOnScreenDebugMessage(
+        -1,
+        4.5f,
+        FColor::Red,
+        TraceActor->GetClass()->GetName()
+      );
+    }
+  }
+}
+
+void ACharacterPlayer::UpdateAudioListener() const
+{
+  if(PlayerController && CameraComponent)
+  {
+    PlayerController->SetAudioListenerOverride(
+      GetRootComponent(),
+      FVector(
+        0,
+        0,
+        2
+      ),
+      GetActorRotation() * -1 + CameraComponent->GetComponentRotation()
+    );
+  }
+}
+
 void ACharacterPlayer::Fire()
 {
   if (PlayerController->IsUIModeActive)
@@ -120,6 +176,8 @@ void ACharacterPlayer::Fire()
 
 void ACharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+  check(PlayerInputComponent);
+
   Super::SetupPlayerInputComponent(
     PlayerInputComponent
   );
@@ -130,7 +188,6 @@ void ACharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
     this,
     &ACharacterPlayer::PrintFire
   );
-
 
   InputComponent->BindAction(
     "Fire",

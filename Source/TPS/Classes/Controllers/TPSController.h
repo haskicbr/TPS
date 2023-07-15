@@ -17,10 +17,11 @@ public:
     VisibleAnywhere,
     BlueprintReadOnly
   )
-  class ACharacterPlayer* ControlledCharacter;
+  ACharacterPlayer* ControlledCharacter;
 
   UPROPERTY()
   FVector TargetPointFromCenterScreen = FVector();
+  FHitResult * TargetHitFromCenterScreen;
 
   UPROPERTY()
   ATPSHud* HUD;
@@ -31,15 +32,9 @@ public:
   bool IsUIModeActive = false;
 
   virtual void SetupInputComponent() override;
-  virtual void MoveForward(float Value);
-  virtual void MoveRight(float Value);
-  virtual void Turn(float Value);
-  virtual void LookUp(float Value);
-  virtual void Jump();
   virtual void SaveGame();
   virtual void LoadGame();
   virtual void UpdateTargetPointFromCenterScreen();
-  virtual void UpdateAudioListener();
 
 protected:
   virtual void BeginPlay() override;
