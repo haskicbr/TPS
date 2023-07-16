@@ -2,6 +2,41 @@
 #include "Camera/CameraComponent.h"
 #include "Weapon/WeaponBase.h"
 
+
+void ACharacterPlayer::BeginPlay()
+{
+  Super::BeginPlay();
+  GetWorldTimerManager().SetTimer(TimerHandleTraceInteractable, this, &ACharacterPlayer::UpdateInteractTrace, 0.1, true);
+}
+
+void ACharacterPlayer::Tick(float DeltaSeconds)
+{
+  Super::Tick(
+    DeltaSeconds
+  );
+
+  if (!PlayerController)
+  {
+    return;
+  }
+
+  UpdateAudioListener();
+
+  if (PlayerController->TargetHitFromCenterScreen)
+  {
+    if (AActor* TraceActor = PlayerController->TargetHitFromCenterScreen->GetActor())
+    {
+      GEngine->AddOnScreenDebugMessage(
+        -1,
+        4.5f,
+        FColor::Red,
+        TraceActor->GetClass()->GetName()
+      );
+    }
+  }
+}
+
+
 ACharacterPlayer::ACharacterPlayer()
 {
   PrimaryActorTick.bCanEverTick = true;
@@ -88,40 +123,79 @@ void ACharacterPlayer::PrintFire()
   );
 }
 
-void ACharacterPlayer::Tick(float DeltaSeconds)
+void ACharacterPlayer::UpdateInteractTrace()
 {
-  Super::Tick(
-    DeltaSeconds
+  ActorInteractable = nullptr;
+
+  FHitResult TraceHit;
+
+  FVector StartTrace = CameraComponent->GetComponentLocation();
+  FVector EndTrace = StartTrace + CameraComponent->GetForwardVector() * 175;
+
+  FCollisionQueryParams CollisionQueryParams;
+
+  CollisionQueryParams.AddIgnoredActor(
+    this
   );
 
-  if (!PlayerController)
+  DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Green, false, 0.3);
+
+  GetWorld()->LineTraceSingleByChannel(
+    TraceHit,
+    StartTrace,
+    EndTrace,
+    ECollisionChannel::ECC_WorldDynamic,
+    CollisionQueryParams
+  );
+
+  DrawDebugSphere(
+    GetWorld(),
+    EndTrace,
+    5,
+    5,
+    FColor::Red,
+    false,
+    0.3
+  );
+
+  if (TraceHit.bBlockingHit)
+  {
+    if (TraceHit.GetActor())
+    {
+      ActorInteractable = TraceHit.GetActor();
+
+      DrawDebugSphere(
+        GetWorld(),
+        EndTrace,
+        5,
+        5,
+        FColor::Green,
+        false,
+        0.3
+      );
+    }
+  }
+}
+
+void ACharacterPlayer::ActorInteract()
+{
+  if (!ActorInteractable)
   {
     return;
   }
 
-  UpdateAudioListener();
-
-  GEngine->AddOnScreenDebugMessage(
-    -1,
-    4.5f,
-    FColor::Red,
-    FString::FromInt(
-      PlayerController->TargetPointFromCenterScreen.X
-    )
-  );
-
-  if (PlayerController->TargetHitFromCenterScreen)
+  if (Cast<APawn>(
+    ActorInteractable
+  ))
   {
-    if (AActor* TraceActor = PlayerController->TargetHitFromCenterScreen->GetActor())
-    {
-      GEngine->AddOnScreenDebugMessage(
-        -1,
-        4.5f,
-        FColor::Red,
-        TraceActor->GetClass()->GetName()
-      );
-    }
+    PlayerController->Possess(
+      Cast<APawn>(
+        ActorInteractable
+      )
+    );
   }
+
+  ActorInteractable = nullptr;
 }
 
 void ACharacterPlayer::UpdateAudioListener() const
@@ -151,13 +225,11 @@ void ACharacterPlayer::Fire()
   {
     const USkeletalMeshComponent* SkeletalMeshComponent = nullptr;
 
-
     SkeletalMeshComponent = Cast<USkeletalMeshComponent>(
       this->GetComponentByClass(
         USkeletalMeshComponent::StaticClass()
       )
     );
-
 
     if (SkeletalMeshComponent)
     {
@@ -226,5 +298,12 @@ void ACharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
     IE_Pressed,
     this,
     &ACharacterPlayer::Jump
+  );
+
+  InputComponent->BindAction(
+    "Fire",
+    IE_Pressed,
+    this,
+    &ACharacterPlayer::ActorInteract
   );
 }

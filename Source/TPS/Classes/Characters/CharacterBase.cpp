@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/Inventory/InventoryComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Weapon/WeaponBase.h"
 
 ACharacterBase::ACharacterBase()
 {
@@ -81,6 +82,10 @@ void ACharacterBase::Death()
     CharacterController->UnPossess();
   }
 
+  if (Weapon)
+  {
+    Weapon->DropFromActor();
+  }
 
   //GetCapsuleComponent()->RemoveFromRoot();
   GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);

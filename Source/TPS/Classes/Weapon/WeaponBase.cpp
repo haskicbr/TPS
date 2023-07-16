@@ -66,3 +66,16 @@ void AWeaponBase::Fire(const FVector To)
     SpawnParameters
   );
 }
+
+// TODO: Update weapon base class for use static mesh for drop item
+void AWeaponBase::DropFromActor()
+{
+  /*auto Rules = FDetachmentTransformRules(
+    EDetachmentRule::KeepWorld,
+    EDetachmentRule::KeepWorld,
+    EDetachmentRule::KeepWorld,
+    true
+  );
+  this->DetachFromActor(Rules);
+  this->SkeletalMeshComponent->SetSimulatePhysics(true);*/
+}

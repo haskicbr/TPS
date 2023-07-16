@@ -13,8 +13,15 @@ class TPS_API ACharacterPlayer : public ACharacterBase
 
 public:
 
+  FTimerHandle TimerHandleTraceInteractable;
+
   UPROPERTY(VisibleAnywhere)
   ATPSController * PlayerController;
+
+  UPROPERTY(
+    VisibleAnywhere
+  )
+  AActor * ActorInteractable;
 
   UPROPERTY(
     VisibleAnywhere,
@@ -28,7 +35,7 @@ public:
     BlueprintReadWrite,
     Category=Components
   )
-  class USpringArmComponent* SpringArmComponent;
+  USpringArmComponent* SpringArmComponent;
 
   UPROPERTY(
     VisibleAnywhere,
@@ -45,10 +52,9 @@ public:
   virtual void PossessedBy(AController* NewController) override;
   virtual void Fire();
   virtual void PrintFire();
-  virtual void BeginPlay() override
-  {
-    Super::BeginPlay();
-  }
+  virtual void UpdateInteractTrace();
+  virtual void ActorInteract();
+  virtual void BeginPlay() override;
   virtual void Tick(float DeltaSeconds) override;
   void UpdateAudioListener() const;
 };

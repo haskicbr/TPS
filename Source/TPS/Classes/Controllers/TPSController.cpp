@@ -157,9 +157,7 @@ void ATPSController::Tick(const float DeltaSeconds)
   Super::Tick(
     DeltaSeconds
   );
-
   UpdateTargetPointFromCenterScreen();
-
 }
 
 void ATPSController::UpdateTargetPointFromCenterScreen()

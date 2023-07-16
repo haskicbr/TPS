@@ -33,5 +33,8 @@ public:
   FName ProjectileSocketName = FName("ProjectileSocket");
 
   UFUNCTION(BlueprintCallable, Category=Weapon)
-  void Fire(const FVector To);
+  virtual void Fire(const FVector To);
+
+  UFUNCTION(BlueprintCallable, Category=Weapon)
+  virtual void DropFromActor();
 };
