@@ -36,12 +36,6 @@ void ATPSHud::InitialWidgets()
   );
   Character = Controller->ControlledCharacter;
 
-
-  CharacterOverlay = CreateWidget<UTestWidget>(
-    GetOwningPlayerController(),
-    CharacterOverlayClass
-  );
-
   MainHudWidget = CreateWidget<UMainHudWidget>(
     GetOwningPlayerController(),
     MainHudWidgetClass
@@ -54,9 +48,8 @@ void ATPSHud::InitialWidgets()
 
   InventoryWidget->InventoryComponent = Character->InventoryComponent;
 
-  if (CharacterOverlay)
+  if (MainHudWidget)
   {
-    CharacterOverlay->AddToViewport();
     MainHudWidget->AddToViewport();
   }
 }

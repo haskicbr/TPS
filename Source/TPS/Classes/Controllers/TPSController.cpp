@@ -11,6 +11,7 @@
 #include "Light/TriggeredLight.h"
 #include "SaveGame/SaveGameData.h"
 #include "UI/TPSHud.h"
+#include "UObject/UnrealTypePrivate.h"
 #include "Weapon/WeaponBase.h"
 
 ATPSController::ATPSController()

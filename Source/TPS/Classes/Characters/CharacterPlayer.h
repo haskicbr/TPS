@@ -18,10 +18,7 @@ public:
   UPROPERTY(VisibleAnywhere)
   ATPSController * PlayerController;
 
-  UPROPERTY(
-    VisibleAnywhere
-  )
-  AActor * ActorInteractable;
+
 
   UPROPERTY(
     VisibleAnywhere,

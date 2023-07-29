@@ -59,6 +59,11 @@ public:
   )
   class AWeaponBase* Weapon;
 
+  UPROPERTY(
+    VisibleAnywhere
+  )
+  AActor* ActorInteractable;
+
 protected:
   virtual void BeginPlay() override;
 
