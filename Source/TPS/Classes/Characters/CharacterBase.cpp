@@ -26,6 +26,12 @@ ACharacterBase::ACharacterBase()
     this,
     &ACharacterBase::Death
   );
+
+  GetCharacterMovement()->JumpZVelocity = 700.f;
+  GetCharacterMovement()->AirControl = 0.35f;
+  GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
+  GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
+  GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 }
 
 void ACharacterBase::BeginPlay()
@@ -48,6 +54,30 @@ void ACharacterBase::MoveRight(float RightAxis)
 {
 }
 
+void ACharacterBase::SprintStart()
+{
+  if (!CanSprint())
+  {
+    return;
+  }
+
+  GetCharacterMovement()->MaxWalkSpeed = MaxSprintSpeed;
+}
+
+void ACharacterBase::SprintStop()
+{
+  GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
+}
+
+bool ACharacterBase::CanSprint()
+{
+  if(CanJump())
+  {
+    return true;
+  }
+
+  return false;
+}
 
 float ACharacterBase::TakeDamage(
   float DamageAmount,

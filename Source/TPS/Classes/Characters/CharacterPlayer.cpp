@@ -306,4 +306,18 @@ void ACharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
     this,
     &ACharacterPlayer::ActorInteract
   );
+
+  PlayerInputComponent->BindAction(
+    "Sprint",
+    IE_Pressed,
+    this,
+    &ACharacterPlayer::SprintStart
+  );
+
+  PlayerInputComponent->BindAction(
+    "Sprint",
+    IE_Released,
+    this,
+    &ACharacterPlayer::SprintStop
+  );
 }

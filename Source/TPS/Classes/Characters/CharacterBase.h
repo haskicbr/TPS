@@ -10,8 +10,8 @@
 UENUM(BlueprintType)
 enum EMovementState
 {
-  CANT_MOVE UMETA(DisplayName="Can't move"),
-  CAN_MOVE UMETA(DisplayName="Can move"),
+  CantMove UMETA(DisplayName="Can't move"),
+  CanMove UMETA(DisplayName="Can move"),
 };
 
 UCLASS()
@@ -22,6 +22,12 @@ class TPS_API ACharacterBase : public ACharacter
 public:
   ACharacterBase();
 
+
+  UPROPERTY(VisibleAnywhere)
+  float MaxWalkSpeed = 350.f;
+
+  UPROPERTY(VisibleAnywhere)
+  float MaxSprintSpeed = 700.f;
 
   UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
   bool bIsDeath = false;
@@ -71,6 +77,9 @@ public:
   virtual void Tick(float DeltaTime) override;
   virtual void MoveForward(float ForwardAxis);
   virtual void MoveRight(float RightAxis);
+  virtual void SprintStart();
+  virtual void SprintStop();
+  virtual bool CanSprint();
 
 
   UFUNCTION()
