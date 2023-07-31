@@ -37,6 +37,13 @@ public:
   UPROPERTY(EditAnywhere, Category="InventoryTest123123123")
   TArray<FInventoryItemParams> InventoryItems;
 
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Test")
+  TArray<AActor*> TestActors;
+
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Test")
+  TSubclassOf<AActor> TestSoftObject;
+
 protected:
   virtual void BeginPlay() override;
 
