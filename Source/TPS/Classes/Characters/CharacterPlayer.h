@@ -18,8 +18,6 @@ public:
   UPROPERTY(VisibleAnywhere)
   ATPSController * PlayerController;
 
-
-
   UPROPERTY(
     VisibleAnywhere,
     BlueprintReadWrite,

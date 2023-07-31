@@ -3,13 +3,13 @@
 void UCharacterBaseAnimInstance::NativeBeginPlay()
 {
   Super::NativeBeginPlay();
-  checkf(
-    TryGetPawnOwner()->IsA<ACharacterBase>(),
-    TEXT("UCharacterBaseAnimInstance::NativeBeginPlay() this class use only ACharacterBase cnass and instances")
-  )
-  CurrentCharacter = StaticCast<ACharacterBase*>(
-    TryGetPawnOwner()
-  );
+  InitializeCharacter();
+}
+
+void UCharacterBaseAnimInstance::NativeInitializeAnimation()
+{
+  Super::NativeInitializeAnimation();
+  InitializeCharacter();
 }
 
 void UCharacterBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -29,12 +29,23 @@ void UCharacterBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
   bIsDead = CurrentCharacter->bIsDeath;
 
 
-  const auto Velocity =  CurrentCharacter->GetVelocity();
+  const auto Velocity = CurrentCharacter->GetVelocity();
   const auto Rotator = CurrentCharacter->GetActorRotation();
 
 
   DirectionAngle = CalculateDirection(
     Velocity,
     Rotator
+  );
+}
+
+void UCharacterBaseAnimInstance::InitializeCharacter()
+{
+  checkf(
+    TryGetPawnOwner()->IsA<ACharacterBase>(),
+    TEXT("UCharacterBaseAnimInstance::NativeBeginPlay() this class use only ACharacterBase cnass and instances")
+  )
+  CurrentCharacter = StaticCast<ACharacterBase*>(
+    TryGetPawnOwner()
   );
 }

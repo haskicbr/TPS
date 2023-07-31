@@ -13,8 +13,9 @@ class TPS_API UCharacterBaseAnimInstance : public UAnimInstance
 
 public:
   virtual void NativeBeginPlay() override;
+  virtual void NativeInitializeAnimation() override;
   virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-
+  virtual void InitializeCharacter();
 protected:
   UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character animation")
   float Speed = 0.0f;
@@ -32,6 +33,4 @@ protected:
 
 private:
   TWeakObjectPtr<class ACharacterBase> CurrentCharacter;
-
-
 };
