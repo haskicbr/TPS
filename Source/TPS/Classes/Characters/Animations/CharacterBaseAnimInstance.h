@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Characters/CharacterBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
 #include "CharacterBaseAnimInstance.generated.h"
 
 UCLASS()
@@ -13,7 +14,6 @@ class TPS_API UCharacterBaseAnimInstance : public UAnimInstance
 
 public:
   virtual void NativeBeginPlay() override;
-  virtual void NativeInitializeAnimation() override;
   virtual void NativeUpdateAnimation(float DeltaSeconds) override;
   virtual void InitializeCharacter();
 protected:
@@ -30,7 +30,8 @@ protected:
   UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character animation")
   double DirectionAngle;
 
-
+  UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character animation")
+  double VerticalAim = 0.0;
 private:
   TWeakObjectPtr<class ACharacterBase> CurrentCharacter;
 };

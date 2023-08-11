@@ -21,7 +21,8 @@ public class TPS : ModuleRules
             "NavigationSystem",
             "AIModule",
             "GameplayTasks",
-            "ChaosVehicles"
+            "ChaosVehicles",
+            "AnimGraphRuntime"
         });
         PublicDependencyModuleNames.AddRange(new string[]
         {

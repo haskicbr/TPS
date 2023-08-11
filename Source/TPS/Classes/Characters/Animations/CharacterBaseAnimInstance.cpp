@@ -1,4 +1,5 @@
 #include "CharacterBaseAnimInstance.h"
+#include "KismetAnimationLibrary.h"
 
 void UCharacterBaseAnimInstance::NativeBeginPlay()
 {
@@ -6,11 +7,6 @@ void UCharacterBaseAnimInstance::NativeBeginPlay()
   InitializeCharacter();
 }
 
-void UCharacterBaseAnimInstance::NativeInitializeAnimation()
-{
-  Super::NativeInitializeAnimation();
-  InitializeCharacter();
-}
 
 void UCharacterBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -20,8 +16,10 @@ void UCharacterBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
   if (!CurrentCharacter.IsValid())
   {
+    InitializeCharacter();
     return;
   }
+
 
   const UCharacterMovementComponent* CharacterMovementComponent = CurrentCharacter->GetCharacterMovement();
   Speed = CharacterMovementComponent->Velocity.Size();
@@ -29,11 +27,12 @@ void UCharacterBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
   bIsDead = CurrentCharacter->bIsDeath;
 
 
-  const auto Velocity = CurrentCharacter->GetVelocity();
-  const auto Rotator = CurrentCharacter->GetActorRotation();
+  const FVector Velocity = CurrentCharacter->GetVelocity();
+  const FRotator Rotator = CurrentCharacter->GetActorRotation();
 
+  VerticalAim = CurrentCharacter->GetBaseAimRotation().Pitch;
 
-  DirectionAngle = CalculateDirection(
+  DirectionAngle = UKismetAnimationLibrary::CalculateDirection(
     Velocity,
     Rotator
   );
@@ -41,10 +40,7 @@ void UCharacterBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UCharacterBaseAnimInstance::InitializeCharacter()
 {
-  checkf(
-    TryGetPawnOwner()->IsA<ACharacterBase>(),
-    TEXT("UCharacterBaseAnimInstance::NativeBeginPlay() this class use only ACharacterBase cnass and instances")
-  )
+
   CurrentCharacter = StaticCast<ACharacterBase*>(
     TryGetPawnOwner()
   );
